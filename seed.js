@@ -1,12 +1,21 @@
 import dotenv from 'dotenv';
 import { MongoClient } from 'mongodb';
+import crypto from 'node:crypto';
 import path from 'path'
 dotenv.config({ path: path.resolve('.env.local') });
-
 
 const uri = process.env.MONGODB_URI;
 const collectionNameProjects = process.env.DB_TABLE_PROJECT_COLLECTION_NAME;
 const collectionNameProfile = process.env.DB_TABLE_PROFILE_COLLECTION_NAME;
+const collectionNameAdminUser = process.env.DB_TABLE_LUCIA_USERS;
+
+async function hashUserPassword(password) {
+  const salt = crypto.randomBytes(16).toString('hex');
+  const hashedPassword = crypto.scryptSync(password, salt, 64);
+
+  return `${hashedPassword.toString('hex')}:${salt}`;
+}
+
 
 
 if (!uri || !collectionNameProjects || !collectionNameProfile) {
@@ -19,11 +28,11 @@ async function seed_profile() {
   try {
     await client.connect();
     const db = client.db();
-    const trainings = db.collection(collectionNameProfile);
+    const profileCollection = db.collection(collectionNameProfile);
 
-    const count = await trainings.countDocuments();
+    const count = await profileCollection.countDocuments();
     if (count === 0) {
-      await trainings.insertOne(
+      await profileCollection.insertOne(
         {
             name: "Ronny Aprilio",
             greetings: "Hi, I'm Ronny",
@@ -35,7 +44,7 @@ async function seed_profile() {
             metadata_title: "Ronny Aprilio - Portfolio",
             metadata_description: "Fullstack Developer | Java, Next.js, TypeScript, Tailwind CSS | AWS",
             copyright: "© Ronny Aprilio. All rights reserved.",
-            github: "https://github.com/Fujisuke",
+            github: "https://github.com/ronnyaprilio",
             linkedin: "https://www.linkedin.com/in/ronny-aprilio/",
             email: "mailto:ronny@kazumaronz.com",
         }
@@ -56,11 +65,11 @@ async function seed_projects() {
   try {
     await client.connect();
     const db = client.db();
-    const trainings = db.collection(collectionNameProjects);
+    const projectCollection = db.collection(collectionNameProjects);
 
-    const count = await trainings.countDocuments();
+    const count = await projectCollection.countDocuments();
     if (count === 0) {
-      await trainings.insertMany([
+      await projectCollection.insertMany([
         {
           title: "AI Chatbot with Mistral & OpenAI",
           image: "/project1-tilabotID_ftzbte.png",
@@ -88,5 +97,37 @@ async function seed_projects() {
   }
 }
 
+async function seed_admin() {
+  const client = new MongoClient(uri);
+  try {
+    await client.connect();
+    const db = client.db();
+    const adminUserCollection = db.collection(collectionNameAdminUser);
+    const count = await adminUserCollection.countDocuments();
+
+    const username = process.env.INIT_USERNAME_ADMIN;
+    let password = process.env.INIT_PASSWORD_ADMIN;
+    const hashedPassword = await hashUserPassword(password);
+    if (count === 0) {
+      await adminUserCollection.insertOne(
+        {
+            username,
+            password: hashedPassword,
+            role: 'admin',
+            createdAt: new Date(),
+        }
+      );
+      console.log('Admin User data seeded successfully!');
+    } else {
+      console.log('Admin User data already has data.');
+    }
+  } catch (err) {
+    console.error(err);
+  } finally {
+    await client.close();
+  }
+}
+
 seed_profile();
 seed_projects();
+seed_admin();
