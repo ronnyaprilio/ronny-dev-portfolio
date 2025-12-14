@@ -2,15 +2,15 @@
 
 import { redirect } from 'next/navigation';
 import clientPromise from '@/lib/mongodb';
-import { cookies } from 'next/headers';
 import { verifyPassword } from './hashPassword';
-import { auth } from './auth';
+import { createAuthSession } from './auth';
+
 
 type LoginState = {
   error?: string;
 };
 
-export async function login( _: LoginState | null,formData: FormData): Promise<LoginState | void> {
+export async function login( _: LoginState | null,formData: FormData): Promise<LoginState> {
   const username = formData.get('username')?.toString();
   const password = formData.get('password')?.toString();
 
@@ -36,16 +36,7 @@ export async function login( _: LoginState | null,formData: FormData): Promise<L
     if (!valid) {
       return { error: 'Invalid username or password' };
     }
-
-    const session = await auth.createSession(user._id.toString(), {});
-    const sessionCookie = auth.createSessionCookie(session.id);
-
-    const cookieStore = await cookies();
-    cookieStore.set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes
-    );
+    await createAuthSession(user.username);
   } catch (error) {
     console.error('[LOGIN_ERROR]', error);
     return { error: 'Something went wrong. Please try again.' };

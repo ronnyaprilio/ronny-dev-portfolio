@@ -111,6 +111,7 @@ async function seed_admin() {
     if (count === 0) {
       await adminUserCollection.insertOne(
         {
+            _id: username,
             username,
             password: hashedPassword,
             role: 'admin',

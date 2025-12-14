@@ -1,28 +1,31 @@
-import { getCurrentUser } from '@/lib/admin/login/getCurrentUser';
+import LogoutButton from '@/components/admin/LogoutButton';
+import { verifyAuthentication } from '@/lib/admin/login/auth';
 import { notFound, redirect } from 'next/navigation';
 import React from 'react';
 
-type Props = {
-  params: Promise<{
-    slug: string;
-  }>;
-};
-
-const AdminMainPage: React.FC<Props> = async ({ params }) => {
+const AdminMainPage: React.FC<AdminPageProps> = async ({ params }) => {
   const { slug } = await params;
   const validSlug = process.env.ADMIN_LOGIN_SLUG;
 
   if (slug !== validSlug) {
     notFound();
   }
-  const user = await getCurrentUser();
+  const user = await verifyAuthentication();
 
   if (!user) {
     redirect(`/admin/${process.env.ADMIN_LOGIN_SLUG}/login`);
   }
+
+  if (!user.user) {
+    redirect(`/admin/${process.env.ADMIN_LOGIN_SLUG}/login`);
+  }
   return ( <>
-      <header className="bg-primary text-white p-4">
-          <h1 className="text-2xl font-bold">Portfolio Admin</h1>
+      <header className="bg-primary text-white p-4 flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Portfolio Admin</h1>
+        <div className="flex items-center gap-4">
+          <span>Welcome, {user.user.id}</span>
+          <LogoutButton />
+        </div>
       </header>
       <div className="flex min-h-screen bg-secondary font-sans">
         <nav className="w-64 bg-white shadow-md">
