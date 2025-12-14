@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { getCurrentUser } from './getCurrentUser';
+import { verifyAuthentication } from './auth';
 
 export function middleware(req: NextRequest) {
-  const currentUser = getCurrentUser();
+  const currentUser = verifyAuthentication();
   const adminPageUrl = `/admin/${process.env.ADMIN_LOGIN_SLUG}`;
 
   if (!currentUser && req.nextUrl.pathname.startsWith(adminPageUrl)) {
