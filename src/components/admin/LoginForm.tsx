@@ -13,13 +13,13 @@ const LoginForm: React.FC = () => {
         name="username"
         type="text"
         placeholder="Username"
-        className="w-full bg-transparent border-b border-gray-300 py-2 text-primary placeholder-gray-400 focus:outline-none focus:border-accent"/>
+        className="w-full bg-transparent border-2 border-gray-300 py-2 pl-4 rounded-2xl text-primary placeholder-gray-400 focus:outline-none focus:border-accent"/>
 
       <input
         name="password"
         type="password"
         placeholder="Password"
-        className="w-full bg-transparent border-b border-gray-300 py-2 text-primary placeholder-gray-400 focus:outline-none focus:border-accent"/>
+        className="w-full bg-transparent border-2 border-gray-300 py-2 pl-4 rounded-2xl text-primary placeholder-gray-400 focus:outline-none focus:border-accent"/>
 
       {state?.error && (
         <p className="text-sm text-red-500 text-center">

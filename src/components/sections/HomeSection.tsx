@@ -1,4 +1,4 @@
-import { ProfileData } from "@/lib/profileData";
+import { ProfileData } from "@/types/profile";
 
 const HomeSection: React.FC<{profile: ProfileData}> = ({profile}) => {
  return (

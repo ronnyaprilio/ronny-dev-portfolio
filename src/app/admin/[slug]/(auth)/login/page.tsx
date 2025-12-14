@@ -2,13 +2,7 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import LoginForm from '@/components/admin/LoginForm';
 
-type Props = {
-  params: Promise<{
-    slug: string;
-  }>;
-};
-
-const AdminLoginPage: React.FC<Props> = async ({ params }) => {
+const AdminLoginPage: React.FC<AdminPageProps> = async ({ params }) => {
   const { slug } = await params;
   const validSlug = process.env.ADMIN_LOGIN_SLUG;
 

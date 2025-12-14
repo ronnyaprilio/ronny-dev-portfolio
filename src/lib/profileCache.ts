@@ -1,4 +1,5 @@
-import { getProfile, ProfileData } from './profileData';
+import { ProfileData } from '@/types/profile';
+import { getProfile } from './profileData';
 
 let cachedProfile: ProfileData | null = null;
 

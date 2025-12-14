@@ -1,18 +1,6 @@
+import { ProfileData } from '@/types/profile';
 import clientPromise from './mongodb';
 import { WithId } from 'mongodb';
-
-export interface ProfileData {
-  name: string;
-  greetings: string;
-  description: string;
-  about_me: string;
-  metadata_title: string;
-  metadata_description: string;
-  copyright: string;
-  github: string;
-  linkedin: string;
-  email: string;
-}
 
 export async function getProfile(): Promise<WithId<ProfileData>> {
   const client = await clientPromise;

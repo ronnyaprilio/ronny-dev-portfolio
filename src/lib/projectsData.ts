@@ -1,13 +1,6 @@
 import clientPromise from './mongodb';
 import { WithId } from 'mongodb';
 
-export interface Project {
-  title: string;
-  image: string;
-  description: string;
-  github: string;
-}
-
 export async function getProjects(): Promise<WithId<Project>[]> {
   const client = await clientPromise;
   const db = client.db(); 

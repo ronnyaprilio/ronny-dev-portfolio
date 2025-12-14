@@ -4,7 +4,7 @@ import { Lucia } from 'lucia';
 import { MongodbAdapter } from '@lucia-auth/adapter-mongodb';
 import { cookies } from "next/headers";
 import clientPromise from '@/lib/mongodb';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 let luciaInstance: Lucia | null = null;
 
@@ -60,4 +60,20 @@ export async function destroySession() {
   if (!session) return { error: "Unauthorized" };
   await lucia.invalidateSession(session.id);
   redirect(`/admin/${process.env.ADMIN_LOGIN_SLUG}/login`);
+}
+
+export async function requireAdminAuth(slug: string) {
+  const authentication = await verifyAuthentication();
+
+  if (!authentication?.user || !authentication?.session) {
+    redirect(`/admin/${process.env.ADMIN_LOGIN_SLUG}/login`);
+  }
+
+  const validSlug = process.env.ADMIN_LOGIN_SLUG;
+
+  if (slug !== validSlug) {
+    notFound();
+  }
+  
+  return authentication;
 }

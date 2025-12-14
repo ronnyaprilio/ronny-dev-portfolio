@@ -1,12 +1,5 @@
 import { getProjects } from '@/lib/projectsData';
 
-interface Project {
-  _id: string;
-  title: string;
-  image: string;
-  description: string;
-}
-
 const ProjectSection = async () => {
   const projectsFromDb = await getProjects();
 

@@ -1,4 +1,4 @@
-import { ProfileData } from "@/lib/profileData";
+import { ProfileData } from "@/types/profile";
 
 const PageHeader: React.FC<{ profile?: ProfileData }> = async ({profile}) => {
   return (

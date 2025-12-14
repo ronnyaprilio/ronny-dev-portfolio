@@ -5,11 +5,6 @@ import clientPromise from '@/lib/mongodb';
 import { verifyPassword } from './hashPassword';
 import { createAuthSession } from './auth';
 
-
-type LoginState = {
-  error?: string;
-};
-
 export async function login( _: LoginState | null,formData: FormData): Promise<LoginState> {
   const username = formData.get('username')?.toString();
   const password = formData.get('password')?.toString();
