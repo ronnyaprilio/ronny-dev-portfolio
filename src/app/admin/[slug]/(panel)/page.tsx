@@ -1,6 +1,8 @@
+import Link from 'next/link';
 import React from 'react';
 
-const AdminDashboard: React.FC<AdminPageProps> = async () => {
+const AdminDashboard: React.FC<AdminPageProps> = async ({ params }) => {
+  const { slug } = await params;
   return ( <>
       <main className="flex-1 p-6 text-primary">
       <h1 className="text-2xl font-bold mb-6">
@@ -16,12 +18,12 @@ const AdminDashboard: React.FC<AdminPageProps> = async () => {
             Update personal information, bio, and metadata.
           </p>
 
-          <a
-            href="./edit-profile"
+          <Link
+            href={`/admin/${slug}/edit-profile`}
             className="inline-block text-sm font-medium text-blue-600 hover:underline"
           >
             Go to Edit Profile →
-          </a>
+          </Link>
         </div>
 
         <div className="rounded-xl border bg-white p-6 shadow-sm hover:shadow-md transition">
@@ -33,7 +35,7 @@ const AdminDashboard: React.FC<AdminPageProps> = async () => {
           </p>
 
           <a
-            href="./edit-projects"
+            href={`/admin/${slug}/edit-projects`}
             className="inline-block text-sm font-medium text-blue-600 hover:underline"
           >
             Go to Projects →

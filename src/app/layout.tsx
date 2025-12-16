@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { getCachedProfile } from '@/lib/profileCache'
+import { getProfile } from '@/lib/profileRepository';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export async function generateMetadata(): Promise<Metadata> {
-  const profileCache = await getCachedProfile();
+  const profileCache = await getProfile();
   return {
     title: profileCache.metadata_title,
     description: profileCache.metadata_description,

@@ -1,6 +1,6 @@
 // call from backend : https://[project].vercel.app/api/revalidate?secret=YOUR_SECRET
 
-import { clearProfileCache } from '@/lib/profileCache';
+import { clearProfileCache } from '@/lib/profileRepository';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

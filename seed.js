@@ -34,6 +34,7 @@ async function seed_profile() {
     if (count === 0) {
       await profileCollection.insertOne(
         {
+            _id: "main-profile",
             name: "Ronny Aprilio",
             greetings: "Hi, I'm Ronny",
             description: "Fullstack Developer | Java, Next.js, TypeScript, Tailwind CSS | AWS",
