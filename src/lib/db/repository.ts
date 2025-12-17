@@ -1,96 +1,73 @@
-import clientPromise from "@/lib/mongodb";
-import { Document, Filter, WithId } from "mongodb";
+import type { Document } from "mongodb";
+import { ObjectId } from "mongodb";
+import { getCollection, toObjectId } from "./db";
 
-const DB_NAME = process.env.DB_NAME;
+export async function findAll<T extends Document>(
+  collection: string
+): Promise<(T & { _id: string })[]> {
+  const col = await getCollection<Document>(collection);
+  const data = await col.find({}).toArray();
 
-/* -------------------------------------------------------------------------- */
-/*                                     GET                                    */
-/* -------------------------------------------------------------------------- */
-
-type GetOneOptions<T extends Document> = {
-  collection: string;
-  filter: Filter<T>;
-};
-
-export async function getOne<T extends Document>({
-  collection,
-  filter = {},
-}: GetOneOptions<T>): Promise<WithId<T> | null> {
-  const client = await clientPromise;
-  const db = client.db(DB_NAME);
-
-  return db.collection<T>(collection).findOne(filter);
+  return data.map((d) => ({
+    ...(d as unknown as T),
+    _id: d._id.toString(),
+  }));
 }
 
-export async function getMany<T extends Document>(
+export async function findById<T extends Document>(
   collection: string,
-  filter: Filter<T> = {}
-): Promise<WithId<T>[]> {
-  const client = await clientPromise;
-  const db = client.db(DB_NAME);
+  id: string
+): Promise<(T & { _id: string }) | null> {
+  const col = await getCollection<Document>(collection);
 
-  return db
-    .collection<T>(collection)
-    .find(filter)
-    .toArray();
-}
+  let data: Document | null;
 
-/* -------------------------------------------------------------------------- */
-/*                                    UPSERT                                  */
-/* -------------------------------------------------------------------------- */
+  if (ObjectId.isValid(id)) {
+    data = await col.findOne({ _id: new ObjectId(id) });
+  } else {
+    data = await col.findOne({ _id: id as any });
+  }
 
-type UpsertOneOptions<T extends Document> = {
-  collection: string;
-  filter: Filter<T>;
-  data: Partial<T>;
-};
-
-export async function upsertOne<T extends Document>({
-  collection,
-  filter,
-  data,
-}: UpsertOneOptions<T>) {
-  const client = await clientPromise;
-  const db = client.db(DB_NAME);
-
-  const result = await db.collection<T>(collection).updateOne(
-    filter,
-    {
-      $set: {
-        ...data,
-        updated_at: new Date(),
-      },
-    },
-    { upsert: true }
-  );
+  if (!data) return null;
 
   return {
-    matchedCount: result.matchedCount,
-    modifiedCount: result.modifiedCount,
-    upsertedId: result.upsertedId,
+    ...(data as unknown as T),
+    _id: data._id.toString(),
   };
 }
 
+export async function createOne<T extends Document>(
+  collection: string,
+  payload: T
+): Promise<string> {
+  const col = await getCollection<Document>(collection);
+  const res = await col.insertOne(payload);
+  return res.insertedId.toString();
+}
 
-/* -------------------------------------------------------------------------- */
-/*                                    DELETE                                  */
-/* -------------------------------------------------------------------------- */
+export async function updateById<T extends Document>(
+  collection: string,
+  id: string,
+  payload: Partial<T>
+): Promise<void> {
+  const col = await getCollection<Document>(collection);
 
-type DeleteOneOptions<T extends Document> = {
-  collection: string;
-  filter: Filter<T>;
-};
+  const filter = ObjectId.isValid(id)
+    ? { _id: new ObjectId(id) }
+    : { _id: id };
 
-export async function deleteOne<T extends Document>({
-  collection,
-  filter,
-}: DeleteOneOptions<T>) {
-  const client = await clientPromise;
-  const db = client.db(DB_NAME);
+  await col.updateOne(filter as any, {
+    $set: payload,
+  });
+}
 
-  const { deletedCount } = await db
-    .collection<T>(collection)
-    .deleteOne(filter);
+export async function deleteById(
+  collection: string,
+  id: string
+): Promise<void> {
+  const col = await getCollection<Document>(collection);
 
-  return { deletedCount };
+  await col.deleteOne({
+    _id: toObjectId(id),
+  });
 }

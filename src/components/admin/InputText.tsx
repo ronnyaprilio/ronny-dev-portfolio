@@ -1,3 +1,5 @@
+import TextareaAutosize from "react-textarea-autosize";
+
 export default function InputText({label, name, className, defaultValue = "", rows}
     : {label: string, name: string, className?: string, defaultValue? : string, rows?: number,}) {
     return (
@@ -10,7 +12,7 @@ export default function InputText({label, name, className, defaultValue = "", ro
             </label>
 
             {rows ? (
-                <textarea
+                <TextareaAutosize
                     id={name}
                     name={name}
                     rows={rows}

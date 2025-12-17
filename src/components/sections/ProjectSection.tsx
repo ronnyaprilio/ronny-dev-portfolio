@@ -1,4 +1,5 @@
 import { getProjects } from '@/lib/projectsData';
+import { Project } from '@/types/project';
 
 const ProjectSection = async () => {
   const projectsFromDb = await getProjects();

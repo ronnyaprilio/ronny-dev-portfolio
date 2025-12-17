@@ -1,7 +1,7 @@
 "use server";
 import { ProfileData } from '@/types/profile';
-import { getOne, upsertOne } from './db/repository';
 import { revalidatePath } from 'next/cache';
+import { findById, updateById } from './db/repository';
 
 let cachedProfile: ProfileData | null = null;
 
@@ -12,10 +12,9 @@ export async function getProfile(): Promise<ProfileData> {
     return cachedProfile;
   }
 
-  const profile = await getOne<ProfileData>({
-    collection: PROFILE_COLLECTION_NAME,
-    filter: { _id: "main-profile" },
-  });
+  const profile = await findById<ProfileData>(
+    PROFILE_COLLECTION_NAME, "main-profile"
+  );
 
   if (!profile) {
     throw new Error("Profile data not found");
@@ -44,11 +43,9 @@ export async function saveProfile(formData: FormData) {
     ])
   ) as Partial<ProfileData>;
 
-  await upsertOne<ProfileData>({
-    collection: PROFILE_COLLECTION_NAME,
-    filter: { _id: "main-profile" },
-    data,
-  });
+  await updateById<ProfileData>(
+    PROFILE_COLLECTION_NAME, "main-profile", data
+  );
 
   clearProfileCache();
   revalidatePath("/");
