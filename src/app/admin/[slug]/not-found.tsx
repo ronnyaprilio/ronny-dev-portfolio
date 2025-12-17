@@ -1,6 +1,6 @@
 import PageHeader from "@/components/PageHeader";
 
-const NotFound: React.FC = () => {
+export default function NotFound() {
  return ( 
     <>
         <PageHeader/>
@@ -13,5 +13,3 @@ const NotFound: React.FC = () => {
     </>
   );
 };
-
-export default NotFound;

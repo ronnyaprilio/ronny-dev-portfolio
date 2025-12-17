@@ -1,4 +1,4 @@
-'use client'; // karena Error Boundary harus client component
+'use client';
 
 import { useEffect } from 'react';
 

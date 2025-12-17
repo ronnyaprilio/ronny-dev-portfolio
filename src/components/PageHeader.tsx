@@ -1,6 +1,6 @@
 import { ProfileData } from "@/types/profile";
 
-const PageHeader: React.FC<{ profile?: ProfileData }> = async ({profile}) => {
+export default function PageHeader({profile} : { profile?: ProfileData }) {
   return (
     <header className="fixed top-0 w-full bg-primary/80 backdrop-blur-md z-10">
     <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -13,5 +13,3 @@ const PageHeader: React.FC<{ profile?: ProfileData }> = async ({profile}) => {
   </header>
   );
 };
-
-export default PageHeader;

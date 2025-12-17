@@ -1,6 +1,6 @@
 import LogoutButton from "./LogoutButton";
 
-const AdminHeader: React.FC<{ username: string }> = ({username}) => {
+export default function AdminHeader({username} : { username: string }) {
     return (
         <header className="bg-primary text-white p-4 flex items-center justify-between">
             <h1 className="text-2xl font-bold">Portfolio Admin</h1>
@@ -11,5 +11,3 @@ const AdminHeader: React.FC<{ username: string }> = ({username}) => {
         </header>
     );
 };
-
-export default AdminHeader;
