@@ -1,0 +1,3 @@
+type LoginState = {
+  error?: string;
+};
