@@ -6,9 +6,12 @@ import { revalidatePath } from "next/cache";
 export async function GET(_: Request, { params }: { params: Promise<{ collection: string; id: string }> }) {
   try{
     const session = await verifyAuthentication();
-    const { collection, id } = await params;
-    if (!session) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    
+    if (!session.user || !session.session) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
 
+    const { collection, id } = await params;
     const data = await findById(collection, id);
     return NextResponse.json(data);
   }catch(error){
@@ -22,16 +25,14 @@ export async function GET(_: Request, { params }: { params: Promise<{ collection
 }
 
 export async function PUT(req: Request,{ params }: { params: Promise<{ collection: string; id: string }> }) {
-  const { collection, id } = await params;
-
-  console.log("collection:", collection);
-  console.log("id:", id);
-
   try {
     const session = await verifyAuthentication();
-    if (!session) {
+    
+    if (!session.user || !session.session) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
+
+    const { collection, id } = await params;
 
     const body = await req.json();
     const { _id, ...safeData } = body;
@@ -50,7 +51,10 @@ export async function PUT(req: Request,{ params }: { params: Promise<{ collectio
 export async function DELETE(_: Request, { params }: { params: Promise<{ collection: string; id: string }>  }) {
   try{
     const session = await verifyAuthentication();
-    if (!session) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+
+    if (!session.user || !session.session) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
 
     const { collection, id } = await params;
     await deleteById(collection, id);

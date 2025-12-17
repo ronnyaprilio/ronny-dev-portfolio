@@ -5,8 +5,11 @@ import { verifyAuthentication } from "@/lib/admin/login/auth";
 export async function GET(_: Request, { params }: { params: Promise<{ collection: string}> }) {
   try{
     const session = await verifyAuthentication();
-    if (!session) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
+    if (!session.user || !session.session) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    
     const { collection } = await params;
     const data = await findAll(collection);
     return NextResponse.json(data);
@@ -22,7 +25,10 @@ export async function GET(_: Request, { params }: { params: Promise<{ collection
 export async function POST(req: Request, { params }: { params: Promise<{ collection: string }> }) {
   try{
     const session = await verifyAuthentication();
-    if (!session) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    
+    if (!session.user || !session.session) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
 
     const body = await req.json();
     const { collection } = await params;
