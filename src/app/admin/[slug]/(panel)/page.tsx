@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-export default function AdminDashboard({ params } : { params: { slug: string } }) {
-  const { slug } = params;
+export default async function AdminDashboard({ params } : { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   return ( <>
       <main className="flex-1 p-6 text-primary">
       <h1 className="text-2xl font-bold mb-6">

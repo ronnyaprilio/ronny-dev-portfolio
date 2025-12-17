@@ -1,8 +1,9 @@
+import React from 'react';
 import { notFound } from 'next/navigation';
 import LoginForm from '@/components/admin/LoginForm';
 
-export default async function AdminLoginPage({ params }: { params: { slug: string }  }) {
-  const { slug } = params;
+export default async function AdminLoginPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const validSlug = process.env.ADMIN_LOGIN_SLUG;
 
   if (slug !== validSlug) {
