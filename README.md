@@ -1,31 +1,36 @@
 # My Portfolio
 
-A fullstack portfolio project built with **Next.js, TypeScript, Tailwind CSS, MongoDB**, and Cloudinary for image hosting. It showcases personal projects, profile information, and supports server-side revalidation for up-to-date content.
+A full‑stack portfolio project built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, **MongoDB**, and **Cloudinary**.
+It showcases personal projects, profile information, and includes an **admin panel** with full CRUD support and optional server‑side revalidation.
 
 ---
 
-## Features
+## ✨ Features
 
-- Dynamic **projects section** powered by MongoDB  
-- **Profile section** with bio and metadata  
-- **Server-side rendering** for fast load times  
-- **Revalidation API** for automatic cache refresh  
-- Fully responsive using **Tailwind CSS**  
-- Cloudinary integration for image uploads  
-- Environment variables for secure configuration
-
----
-
-## Tech Stack
-
-- **Frontend:** Next.js, TypeScript, Tailwind CSS  
-- **Backend / Database:** MongoDB  
-- **Image Hosting:** Cloudinary  
-- **Deployment:** Vercel or On-Premise Server
+* Dynamic **Projects section** powered by MongoDB
+* **Profile section** with bio & metadata stored in database
+* **Admin Panel** (Add / Edit / Delete projects)
+* **Client–Server separation** using Next.js App Router
+* **Server‑side rendering** for fast initial load
+* **Revalidation API** for refreshing cached data without redeploy
+* Fully responsive UI with **Tailwind CSS**
+* **Cloudinary** integration for image hosting
+* Secure configuration via **environment variables**
 
 ---
 
-## Getting Started
+## 🧱 Tech Stack
+
+* **Frontend:** Next.js (App Router), TypeScript, Tailwind CSS
+* **Backend / API:** Next.js Route Handlers
+* **Database:** MongoDB
+* **Auth / Session:** Lucia (sessions & users collections)
+* **Image Hosting:** Cloudinary
+* **Deployment:** Vercel or self‑hosted (Node.js)
+
+---
+
+## 🚀 Getting Started
 
 ### 1. Clone the repository
 
@@ -33,6 +38,8 @@ A fullstack portfolio project built with **Next.js, TypeScript, Tailwind CSS, Mo
 git clone https://github.com/yourusername/my-portfolio.git
 cd my-portfolio
 ```
+
+---
 
 ### 2. Install dependencies
 
@@ -42,22 +49,45 @@ npm install
 pnpm install
 ```
 
+---
+
 ### 3. Setup Environment Variables
 
 Create a `.env.local` file in the root directory:
 
 ```env
-MONGODB_URI="mongodb+srv://username:password@cluster.mongodb.net/myportfolio?appName=DB_MONGO"
-DB_TABLE_PROJECT_COLLECTION_NAME="projects"
-DB_TABLE_PROFILE_COLLECTION_NAME="profiles"
+# Database
+MONGODB_URI="<your-mongodb-uri>"
+DB_NAME="<your-database-name>"
 
-REVALIDATE_SECRET="your-secret-key"
-REVALIDATE_ENABLE="true"
+# Collections
+DB_TABLE_PROJECT_COLLECTION_NAME="<your-project-collection-name>"
+DB_TABLE_PROFILE_COLLECTION_NAME="<your-profile-collection-name>"
+DB_TABLE_LUCIA_SESSIONS="<your-sessions-collection-name>"
+DB_TABLE_LUCIA_USERS="<your-users-collection-name>"
 
-CLOUDINARY_URL="cloudinary://api_key:api_secret@cloud_name"
+# Admin Initial Login (used only for initial setup)
+INIT_USERNAME_ADMIN="<your-admin-username>"
+INIT_PASSWORD_ADMIN="<your-admin-password>"
+
+# Admin panel
+ADMIN_LOGIN_SLUG="<your-admin-login-slug>"
+
+# Revalidation
+REVALIDATE_SECRET="<your-revalidate-secret>"
+REVALIDATE_ENABLE=false
+
+# Cloudinary
+CLOUDINARY_URL="<your-cloudinary-base-url>"
 ```
 
-> ⚠️ **Do not commit `.env.local`**. Keep it secure on your server or deployment platform.
+> ⚠️ **IMPORTANT**
+>
+> * Never commit `.env.local` to version control
+> * Rotate secrets before deploying to production
+> * `INIT_*` variables should be removed or disabled after first admin creation
+
+---
 
 ### 4. Run Development Server
 
@@ -67,7 +97,9 @@ npm run dev
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
 
 ### 5. Build for Production
 
@@ -78,18 +110,56 @@ npm start
 
 ---
 
-## Deployment
+## 🔐 Admin Panel
+
+* Access path is protected by a **custom admin slug**
+* Supports:
+
+  * Create project
+  * Edit project
+  * Delete project
+* Uses client‑side dialogs with server API routes
+* Data refresh handled via controlled re‑fetch (no full page reload)
+
+---
+
+## 🔄 Revalidation
+
+This project supports **on‑demand revalidation** using a secret key.
+
+* Enable/disable via:
+
+```env
+REVALIDATE_ENABLE=true
+```
+
+* Protected by `REVALIDATE_SECRET`
+* Useful when content changes without redeploying
+
+---
+
+## ☁️ Cloudinary
+
+* Images are stored and served from Cloudinary
+* Only the **base delivery URL** is exposed to the client
+* Upload credentials are kept server‑side
+
+---
+
+## 📦 Deployment
 
 ### Vercel
 
-1. Push your repository to GitHub  
-2. Import the project in Vercel  
-3. Add all environment variables in **Vercel Dashboard → Environment Variables**  
-4. Deploy; Vercel handles build automatically
+1. Push repository to GitHub
+2. Import project in Vercel
+3. Add all environment variables in **Vercel → Settings → Environment Variables**
+4. Deploy
 
-### On-Premise Server
+---
 
-1. Copy the following to your server:
+### Self‑Hosted / On‑Premise
+
+1. Copy required files:
 
 ```
 .next/
@@ -106,51 +176,51 @@ next.config.js
 npm install
 ```
 
-3. Set permissions for `.env.local`:
+3. Secure env file:
 
 ```bash
 chmod 600 .env.local
 ```
 
-4. Run the production server:
+4. Start server:
 
 ```bash
 npm start
 ```
 
-- Server will read `.env.local` → MongoDB, API keys, etc.
-- Server-side code (MongoDB, API routes, server components) can access env vars.
+---
+
+## 🌱 Environment Variables Reference
+
+| Variable                           | Description                   |
+| ---------------------------------- | ----------------------------- |
+| `MONGODB_URI`                      | MongoDB connection string     |
+| `DB_NAME`                          | Database name                 |
+| `DB_TABLE_PROJECT_COLLECTION_NAME` | Projects collection           |
+| `DB_TABLE_PROFILE_COLLECTION_NAME` | Profile collection            |
+| `DB_TABLE_LUCIA_SESSIONS`          | Lucia sessions collection     |
+| `DB_TABLE_LUCIA_USERS`             | Lucia users collection        |
+| `INIT_USERNAME_ADMIN`              | Initial admin username        |
+| `INIT_PASSWORD_ADMIN`              | Initial admin password        |
+| `ADMIN_LOGIN_SLUG`                 | Custom admin route slug       |
+| `REVALIDATE_SECRET`                | Revalidation API secret       |
+| `REVALIDATE_ENABLE`                | Enable / disable revalidation |
+| `CLOUDINARY_URL`                   | Cloudinary delivery base URL  |
 
 ---
 
-## Environment Variables
+## 🛠 Error Handling
 
-| Variable | Description | Example / Notes |
-|----------|------------|----------------|
-| `MONGODB_URI` | Connection URI for MongoDB database | `mongodb+srv://username:password@cluster.mongodb.net/myportfolio` |
-| `DB_TABLE_PROJECT_COLLECTION_NAME` | Name of the collection to store project data | `projects` |
-| `DB_TABLE_PROFILE_COLLECTION_NAME` | Name of the collection to store user profile data | `profiles` |
-| `REVALIDATE_SECRET` | Secret key for calling Next.js revalidate API | `some-secret-key` |
-| `REVALIDATE_ENABLE` | Flag to enable/disable revalidation | `true` / `false` |
-| `CLOUDINARY_URL` | Cloudinary URL for uploading/hosting images | `cloudinary://api_key:api_secret@cloud_name` |
+* Custom error page for server errors
+* Clear logging during development
+* Defensive checks for API routes & payloads
 
 ---
 
-## Usage
+## 📄 License
 
-- Update projects in MongoDB and use the **revalidate API** to refresh content without redeploying  
-- Profile metadata (`title`, `description`) is pulled dynamically from the database  
-- Images are served via Cloudinary
+This project is open‑source and licensed under the **MIT License**.
 
 ---
 
-## Error Handling
-
-The application includes a **custom error page** to display server-side errors. Any thrown error message (`throw new Error("..."`) will be shown on the page for debugging purposes in development.
-
----
-
-## License
-
-This project is open-source and free to use under the **MIT License**.
-
+> Built with care, iteration, and a lot of debugging ☕
