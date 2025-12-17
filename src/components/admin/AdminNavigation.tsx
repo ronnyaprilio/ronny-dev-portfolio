@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const AdminNavigation: React.FC<{slug: string}> = ({slug}) => {
+export default function AdminNavigation({slug} : {slug: string}) {
     return (
         <nav className="w-64 bg-white shadow-md">
           <ul className="p-4 space-y-2">
@@ -18,5 +18,3 @@ const AdminNavigation: React.FC<{slug: string}> = ({slug}) => {
         </nav>
     );
 };
-
-export default AdminNavigation;

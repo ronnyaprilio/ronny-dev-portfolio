@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-const PageHead: React.FC = () => {
+export default function PageHead() {
   return (
     <Head>
       <meta charSet="UTF-8" />
@@ -14,5 +14,3 @@ const PageHead: React.FC = () => {
     </Head>
   );
 };
-
-export default PageHead;

@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import React from 'react';
 
-const AdminDashboard: React.FC<AdminPageProps> = async ({ params }) => {
+export default async function AdminDashboard({ params } : { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   return ( <>
       <main className="flex-1 p-6 text-primary">
@@ -46,5 +45,3 @@ const AdminDashboard: React.FC<AdminPageProps> = async ({ params }) => {
     </>
   );
 };
-
-export default AdminDashboard;

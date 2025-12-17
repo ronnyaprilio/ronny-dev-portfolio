@@ -1,6 +1,6 @@
 import { ProfileData } from "@/types/profile";
 
-const Footer: React.FC<{profile: ProfileData}> = ({profile}) => {
+export default function Footer({profile} : {profile: ProfileData}) {
   return (
     <footer id="contact" className="py-10 bg-secondary">
       <div className="container mx-auto px-6 text-center">
@@ -69,5 +69,3 @@ const Footer: React.FC<{profile: ProfileData}> = ({profile}) => {
     </footer>
   );
 };
-
-export default Footer;

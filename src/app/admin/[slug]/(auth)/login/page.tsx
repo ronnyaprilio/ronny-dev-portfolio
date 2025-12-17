@@ -2,7 +2,7 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import LoginForm from '@/components/admin/LoginForm';
 
-const AdminLoginPage: React.FC<AdminPageProps> = async ({ params }) => {
+export default async function AdminLoginPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const validSlug = process.env.ADMIN_LOGIN_SLUG;
 
@@ -24,5 +24,3 @@ const AdminLoginPage: React.FC<AdminPageProps> = async ({ params }) => {
     </div>
   );
 };
-
-export default AdminLoginPage;

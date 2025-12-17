@@ -1,10 +1,8 @@
 "use client"
 
 import { destroySession } from '@/lib/admin/login/auth';
-import { redirect } from 'next/navigation';
-import React from 'react';
 
-const LogoutButton: React.FC = () => {
+export default function LogoutButton() {
   const handleLogout = async () => {
     destroySession();
   };
@@ -19,5 +17,3 @@ const LogoutButton: React.FC = () => {
     </button>
   );
 };
-
-export default LogoutButton;

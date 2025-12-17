@@ -1,10 +1,9 @@
 'use client';
 
 import { login } from '@/lib/admin/login/action';
-import React from 'react';
 import { useActionState } from 'react';
 
-const LoginForm: React.FC = () => {
+export default function LoginForm() {
   const [state, action] = useActionState(login, null);
 
   return (
@@ -36,5 +35,3 @@ const LoginForm: React.FC = () => {
     </form>
   );
 };
-
-export default LoginForm;
