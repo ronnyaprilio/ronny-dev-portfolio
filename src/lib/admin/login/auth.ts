@@ -63,17 +63,15 @@ export async function destroySession() {
 }
 
 export async function requireAdminAuth(slug: string) {
+  const validSlug = process.env.ADMIN_LOGIN_SLUG;
+  if (slug !== validSlug) {
+    notFound();
+  }
+
   const authentication = await verifyAuthentication();
 
   if (!authentication?.user || !authentication?.session) {
     redirect(`/admin/${process.env.ADMIN_LOGIN_SLUG}/login`);
   }
-
-  const validSlug = process.env.ADMIN_LOGIN_SLUG;
-
-  if (slug !== validSlug) {
-    notFound();
-  }
-  
   return authentication;
 }
