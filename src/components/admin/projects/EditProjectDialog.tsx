@@ -8,17 +8,22 @@ type Props = {
   collectionName: string;
   project: Project | null;
   onClose: () => void;
+  onCancel?: () => void;
   onSaved: () => void;
 };
 
-export default function EditProjectDialog({open, collectionName, project, onClose, onSaved }: Props) {
+export default function EditProjectDialog({open, collectionName, project, onClose, onCancel, onSaved }: Props) {
   const [form, setForm] = useState<Project | null>(null);
   const [loading, setLoading] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  
   const isEdit = Boolean(form?._id);
   
   useEffect(() => {
     if (project) {
       setForm(project);
+      setPreviewImage(project.image);
     }
   }, [project]);
 
@@ -28,27 +33,68 @@ export default function EditProjectDialog({open, collectionName, project, onClos
     setForm({ ...form, [key]: value });
   };
 
+  const handleCancel = () => {
+    // reset UI-only state
+    setPreviewImage(null);
+    setImageFile(null);
+
+    onCancel?.(); // optional hook
+    onClose();    // tutup dialog
+  };
+
+  const uploadImage = async () => {
+    if (!imageFile) return null;
+
+    const formData = new FormData();
+    formData.append("file", imageFile);
+
+    const res = await fetch("/api/upload-image", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) throw new Error("Image upload failed");
+
+    return res.json(); 
+  };
+
   const onSubmit = async (e: React.FormEvent) => {
-    const res = await fetch(
-      isEdit
-        ? `/api/${collectionName}/${form._id}`
-        : `/api/${collectionName}`,
-      {
-        method: isEdit ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: form.title,
-          image: form.image,
-          description: form.description,
-          github: form.github,
-        }),
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      let imageData = null;
+
+      if (imageFile) {
+        imageData = await uploadImage();
       }
-    );
 
-    if (!res.ok) throw new Error("Save failed");
+      const res = await fetch(
+        isEdit
+          ? `/api/${collectionName}/${form._id}`
+          : `/api/${collectionName}`,
+        {
+          method: isEdit ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: form.title,
+            description: form.description,
+            github: form.github,
+            live_demo: form.live_demo,
+            image: imageData?.url || form.image,
+            image_public_id:
+            imageData?.public_id || form.image_public_id,
+          }),
+        }
+      );
 
-    onClose();
-    onSaved();
+      if (!res.ok) throw new Error("Save failed");
+
+      onClose();
+      onSaved();
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -61,26 +107,59 @@ export default function EditProjectDialog({open, collectionName, project, onClos
           Edit Project
         </h2>
 
-        <div>
-          <label className="block text-sm text-gray-500 mb-1">
-            Title
-          </label>
-          <input
-            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
-            value={form.title}
-            onChange={(e) => onChange("title", e.target.value)}
-          />
+        <div className="grid grid-cols-[140px_1fr] gap-4 items-start">
+          <div>
+            <label className="block text-sm text-gray-500 mb-1">
+              Project Image
+            </label>
+
+            <label className="cursor-pointer block">
+              {previewImage ? (
+                <img
+                  src={previewImage}
+                  alt="preview"
+                  className="w-full h-32 object-cover rounded-lg mb-2 border hover:opacity-90 transition"
+                />
+              ) : form.image ? (
+                <img
+                  src={form.image}
+                  alt="preview"
+                  className="w-full h-32 object-cover rounded-lg mb-2 border hover:opacity-90 transition"
+                />
+              ) : (
+                <div className="w-full h-32 rounded-lg border border-dashed flex items-center justify-center text-xs text-gray-400 mb-2 hover:bg-gray-50 transition">
+                  Click to upload
+                </div>
+              )}
+
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+
+                  setImageFile(file);
+                  setPreviewImage(URL.createObjectURL(file));
+                }}
+              />
+            </label>
+          </div>
+          <div>
+            <label className="block text-sm text-gray-500 mb-1">
+              Title
+            </label>
+            <input
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
+              value={form.title}
+              onChange={(e) => onChange("title", e.target.value)}
+            />
+          </div>
         </div>
 
         <div>
-          <label className="block text-sm text-gray-500 mb-1">
-            Image URL
-          </label>
-          <input
-            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
-            value={form.image}
-            onChange={(e) => onChange("image", e.target.value)}
-          />
+          
         </div>
 
         <div>
@@ -101,15 +180,27 @@ export default function EditProjectDialog({open, collectionName, project, onClos
           </label>
           <input
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
-            value={form.github}
+            value={form.github || ""}
             onChange={(e) => onChange("github", e.target.value)}
+          />
+        </div>
+        <div>
+          <label className="block text-sm text-gray-500 mb-1">
+            Live Demo URL
+          </label>
+          <input
+            type="url"
+            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent"
+            value={form.live_demo || ""}
+            onChange={(e) => onChange("live_demo", e.target.value)}
+            placeholder="https://your-demo-site.com"
           />
         </div>
 
         <div className="flex justify-end gap-2 pt-4">
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleCancel}
             className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800"
             disabled={loading}
           >

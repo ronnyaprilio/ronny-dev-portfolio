@@ -8,7 +8,6 @@ export default function EditProjects() {
             <h2 className="text-2xl font-semibold text-primary mb-4">
                 Edit Projects
             </h2>
-
             <ProjectsTable projectsCollectionName={projectsCollectionName} />
         </section>
     );
