@@ -1,7 +1,8 @@
-import cloudinary from "@/lib/cloudinary";
+import { getCloudinary } from "@/lib/cloudinary";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+  const cloudinary = getCloudinary();
   const formData = await req.formData();
   const file = formData.get("file") as File;
 

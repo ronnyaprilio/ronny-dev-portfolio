@@ -3,7 +3,7 @@ import { findById, updateById, deleteById } from "@/lib/db/repository";
 import { verifyAuthentication } from "@/lib/admin/login/auth";
 import { revalidatePath } from "next/cache";
 import { PROJECT_COLLECTION_NAME } from "@/lib/projectsData";
-import cloudinary from "@/lib/cloudinary";
+import { getCloudinary } from "@/lib/cloudinary";
 
 export async function GET(_: Request, { params }: { params: Promise<{ collection: string; id: string }> }) {
   try{
@@ -68,7 +68,7 @@ export async function DELETE(_: Request, { params }: { params: Promise<{ collect
 
       if (doc.image_public_id) {
         try {
-          await cloudinary.uploader.destroy(doc.image_public_id);
+          await getCloudinary().uploader.destroy(doc.image_public_id);
         } catch (err) {
           console.warn("Cloudinary delete failed:", err);
         }
