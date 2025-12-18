@@ -10,11 +10,12 @@ It showcases personal projects, profile information, and includes an **admin pan
 * Dynamic **Projects section** powered by MongoDB
 * **Profile section** with bio & metadata stored in database
 * **Admin Panel** (Add / Edit / Delete projects)
+* Clean **Add / Edit dialog** with image upload & live preview
 * **Client–Server separation** using Next.js App Router
 * **Server‑side rendering** for fast initial load
-* **Revalidation API** for refreshing cached data without redeploy
+* **On‑demand revalidation API** (no redeploy required)
 * Fully responsive UI with **Tailwind CSS**
-* **Cloudinary** integration for image hosting
+* **Cloudinary** integration for secure image hosting
 * Secure configuration via **environment variables**
 
 ---
@@ -66,11 +67,11 @@ DB_TABLE_PROFILE_COLLECTION_NAME="<your-profile-collection-name>"
 DB_TABLE_LUCIA_SESSIONS="<your-sessions-collection-name>"
 DB_TABLE_LUCIA_USERS="<your-users-collection-name>"
 
-# Admin Initial Login (used only for initial setup)
+# Admin Initial Login (used only for first setup)
 INIT_USERNAME_ADMIN="<your-admin-username>"
 INIT_PASSWORD_ADMIN="<your-admin-password>"
 
-# Admin panel
+# Admin Panel
 ADMIN_LOGIN_SLUG="<your-admin-login-slug>"
 
 # Revalidation
@@ -78,14 +79,18 @@ REVALIDATE_SECRET="<your-revalidate-secret>"
 REVALIDATE_ENABLE=false
 
 # Cloudinary
-CLOUDINARY_URL="<your-cloudinary-base-url>"
+CLOUDINARY_CLOUD_NAME="<your-cloudinary-cloud-name>"
+CLOUDINARY_API_KEY="<your-cloudinary-api-key>"
+CLOUDINARY_API_SECRET="<your-cloudinary-api-secret>"
+CLOUDINARY_FOLDER="<your-cloudinary-folder>"
 ```
 
 > ⚠️ **IMPORTANT**
 >
 > * Never commit `.env.local` to version control
 > * Rotate secrets before deploying to production
-> * `INIT_*` variables should be removed or disabled after first admin creation
+> * `INIT_*` variables should be removed or disabled after the first admin account is created
+> * `CLOUDINARY_FOLDER` is optional — if not set, images are uploaded to the root folder
 
 ---
 
@@ -112,13 +117,15 @@ npm start
 
 ## 🔐 Admin Panel
 
-* Access path is protected by a **custom admin slug**
-* Supports:
+* Access is protected by a **custom admin slug**
+* Supports full CRUD operations:
 
   * Create project
   * Edit project
   * Delete project
 * Uses client‑side dialogs with server API routes
+* Image upload handled securely via server
+* UI state resets correctly on open / cancel / close
 * Data refresh handled via controlled re‑fetch (no full page reload)
 
 ---
@@ -127,7 +134,7 @@ npm start
 
 This project supports **on‑demand revalidation** using a secret key.
 
-* Enable/disable via:
+Enable or disable via:
 
 ```env
 REVALIDATE_ENABLE=true
@@ -140,9 +147,12 @@ REVALIDATE_ENABLE=true
 
 ## ☁️ Cloudinary
 
-* Images are stored and served from Cloudinary
-* Only the **base delivery URL** is exposed to the client
-* Upload credentials are kept server‑side
+* Images are uploaded and stored in **Cloudinary**
+* Uploads are handled **server‑side** via API routes
+* The database stores the **full image URL** (`secure_url`)
+* Each image also stores a `public_id` for safe deletion
+* Cloudinary credentials are **never exposed to the client**
+* Old images are safely removed when projects are deleted
 
 ---
 
@@ -205,15 +215,18 @@ npm start
 | `ADMIN_LOGIN_SLUG`                 | Custom admin route slug       |
 | `REVALIDATE_SECRET`                | Revalidation API secret       |
 | `REVALIDATE_ENABLE`                | Enable / disable revalidation |
-| `CLOUDINARY_URL`                   | Cloudinary delivery base URL  |
+| `CLOUDINARY_CLOUD_NAME`            | Cloudinary cloud name         |
+| `CLOUDINARY_API_KEY`               | Cloudinary API key            |
+| `CLOUDINARY_API_SECRET`            | Cloudinary API secret         |
+| `CLOUDINARY_FOLDER`                | Default upload folder         |
 
 ---
 
 ## 🛠 Error Handling
 
-* Custom error page for server errors
+* Defensive checks in API routes
+* Graceful UI fallbacks for empty states
 * Clear logging during development
-* Defensive checks for API routes & payloads
 
 ---
 

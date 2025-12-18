@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { findById, updateById, deleteById } from "@/lib/db/repository";
 import { verifyAuthentication } from "@/lib/admin/login/auth";
 import { revalidatePath } from "next/cache";
+import { PROJECT_COLLECTION_NAME } from "@/lib/projectsData";
+import { getCloudinary } from "@/lib/cloudinary";
 
 export async function GET(_: Request, { params }: { params: Promise<{ collection: string; id: string }> }) {
   try{
@@ -57,6 +59,22 @@ export async function DELETE(_: Request, { params }: { params: Promise<{ collect
     }
 
     const { collection, id } = await params;
+    
+
+    if(collection === PROJECT_COLLECTION_NAME){
+      const doc = await findById(PROJECT_COLLECTION_NAME, id);
+
+      if (!doc) throw new Error("Document not found");
+
+      if (doc.image_public_id) {
+        try {
+          await getCloudinary().uploader.destroy(doc.image_public_id);
+        } catch (err) {
+          console.warn("Cloudinary delete failed:", err);
+        }
+      }
+    }
+
     await deleteById(collection, id);
     revalidatePath("/");
     return NextResponse.json({ success: true });
