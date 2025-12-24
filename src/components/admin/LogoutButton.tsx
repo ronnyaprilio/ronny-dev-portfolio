@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { destroySession } from '@/lib/admin/login/auth';
+import { logout } from "@/lib/admin/login/logoutAction";
 
 export default function LogoutButton() {
   const handleLogout = async () => {
-    destroySession();
+    logout();
   };
 
   return (

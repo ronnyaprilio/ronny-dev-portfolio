@@ -1,7 +1,7 @@
 import { Inter } from 'next/font/google';
 import AdminHeader from '@/components/admin/AdminHeader';
 import AdminNavigation from '@/components/admin/AdminNavigation';
-import { requireAdminAuth } from '@/lib/admin/login/auth';
+import { requireAdminAuth } from '@/lib/admin/login/authenticationGuard';
 
 const inter = Inter({ subsets: ['latin'] });
 

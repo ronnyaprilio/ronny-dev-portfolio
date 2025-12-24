@@ -9,7 +9,11 @@ export async function hashUserPassword(password: string): Promise<string> {
   return `${hashedPassword.toString('hex')}:${salt}`;
 }
 
-export async function verifyPassword( storedPassword: string, suppliedPassword: string): Promise<boolean> {
+export async function verifyPassword( storedPassword: unknown, suppliedPassword: unknown): Promise<boolean> {
+
+  if (typeof suppliedPassword !== "string" || typeof storedPassword !== "string") {
+    return false;
+  }
   const [hashedPassword, salt] = storedPassword.split(':');
 
   if (!hashedPassword || !salt) return false;

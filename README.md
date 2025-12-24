@@ -83,6 +83,9 @@ CLOUDINARY_CLOUD_NAME="<your-cloudinary-cloud-name>"
 CLOUDINARY_API_KEY="<your-cloudinary-api-key>"
 CLOUDINARY_API_SECRET="<your-cloudinary-api-secret>"
 CLOUDINARY_FOLDER="<your-cloudinary-folder>"
+
+# Next-Auth
+NEXT_AUTH_SECRET=<your-next-auth-secret>
 ```
 
 > ⚠️ **IMPORTANT**
@@ -219,6 +222,7 @@ npm start
 | `CLOUDINARY_API_KEY`               | Cloudinary API key            |
 | `CLOUDINARY_API_SECRET`            | Cloudinary API secret         |
 | `CLOUDINARY_FOLDER`                | Default upload folder         |
+| `NEXT_AUTH_SECRET`                 | JWT Secret for Next-Auth      |
 
 ---
 

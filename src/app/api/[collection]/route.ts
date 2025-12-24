@@ -1,6 +1,8 @@
+import "server-only";
+
 import { NextResponse } from "next/server";
 import { findAll, createOne } from "@/lib/db/repository";
-import { verifyAuthentication } from "@/lib/admin/login/auth";
+import { verifyAuthentication } from "@/lib/admin/login/authenticationGuard";
 
 export async function GET(_: Request, { params }: { params: Promise<{ collection: string}> }) {
   try{

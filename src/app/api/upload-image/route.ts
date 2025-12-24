@@ -1,4 +1,4 @@
-import { verifyAuthentication } from "@/lib/admin/login/auth";
+import { verifyAuthentication } from "@/lib/admin/login/authenticationGuard";
 import { getCloudinary } from "@/lib/cloudinary";
 import { NextResponse } from "next/server";
 
