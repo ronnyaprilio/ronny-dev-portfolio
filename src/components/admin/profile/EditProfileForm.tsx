@@ -2,7 +2,7 @@
 
 import InputText from "@/components/admin/InputText";
 import SaveProfile from "@/components/admin/profile/SaveProfileButton";
-import { saveProfile } from "@/lib/profileRepository";
+import { saveProfileAction } from "@/lib/admin/profile/action";
 import { ProfileData } from "@/types/profile";
 import { useState } from "react";
 
@@ -24,7 +24,7 @@ export default function EditProfileClient({ profile }: {profile: ProfileData}) {
         Edit Profile
       </h2>
 
-      <form className="bg-white p-6 rounded-xl shadow-md text-primary" action={saveProfile} onChange={handleFormChange}>
+      <form className="bg-white p-6 rounded-xl shadow-md text-primary" action={saveProfileAction} onChange={handleFormChange}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
           <InputText label="Name" name="name" defaultValue={form.name}/>

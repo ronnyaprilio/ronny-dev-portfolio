@@ -1,4 +1,5 @@
-"use server";
+import "server-only";
+
 import { ProfileData } from '@/types/profile';
 import { revalidatePath } from 'next/cache';
 import { findById, updateById } from './db/repository';

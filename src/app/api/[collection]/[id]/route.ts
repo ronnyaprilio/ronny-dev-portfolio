@@ -1,9 +1,11 @@
+import "server-only";
+
 import { NextResponse } from "next/server";
 import { findById, updateById, deleteById } from "@/lib/db/repository";
-import { verifyAuthentication } from "@/lib/admin/login/auth";
 import { revalidatePath } from "next/cache";
 import { PROJECT_COLLECTION_NAME } from "@/lib/projectsData";
 import { getCloudinary } from "@/lib/cloudinary";
+import { verifyAuthentication } from "@/lib/admin/login/authenticationGuard";
 
 export async function GET(_: Request, { params }: { params: Promise<{ collection: string; id: string }> }) {
   try{
