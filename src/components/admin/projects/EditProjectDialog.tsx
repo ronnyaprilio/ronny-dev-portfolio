@@ -34,12 +34,11 @@ export default function EditProjectDialog({open, collectionName, project, onClos
   };
 
   const handleCancel = () => {
-    // reset UI-only state
     setPreviewImage(null);
     setImageFile(null);
 
-    onCancel?.(); // optional hook
-    onClose();    // tutup dialog
+    onCancel?.();
+    onClose();
   };
 
   const uploadImage = async () => {
