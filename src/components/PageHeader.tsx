@@ -7,6 +7,7 @@ export default function PageHeader({profile} : { profile?: ProfileData }) {
       <a href="#home" className="text-xl font-bold">{profile? profile.name ? profile.name : "Profile" : "Profile"}</a>
       <ul className="flex space-x-6">
         <li><a href="#projects" className="hover:text-accent">Projects</a></li>
+        <li><a href="#experiences" className="hover:text-accent">Experiences</a></li>
         <li><a href="#about" className="hover:text-accent">About</a></li>
       </ul>
     </nav>

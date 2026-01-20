@@ -25,7 +25,7 @@ It showcases personal projects, profile information, and includes an **admin pan
 * **Frontend:** Next.js (App Router), TypeScript, Tailwind CSS
 * **Backend / API:** Next.js Route Handlers
 * **Database:** MongoDB
-* **Auth / Session:** Lucia (sessions & users collections)
+* **Auth / Session:** NextAuth (JWT-based)
 * **Image Hosting:** Cloudinary
 * **Deployment:** Vercel or self‑hosted (Node.js)
 
@@ -64,8 +64,7 @@ DB_NAME="<your-database-name>"
 # Collections
 DB_TABLE_PROJECT_COLLECTION_NAME="<your-project-collection-name>"
 DB_TABLE_PROFILE_COLLECTION_NAME="<your-profile-collection-name>"
-DB_TABLE_LUCIA_SESSIONS="<your-sessions-collection-name>"
-DB_TABLE_LUCIA_USERS="<your-users-collection-name>"
+DB_TABLE_EXPERIENCE_COLLECTION_NAME="<your-experience-collection-name>"
 
 # Admin Initial Login (used only for first setup)
 INIT_USERNAME_ADMIN="<your-admin-username>"
@@ -205,24 +204,23 @@ npm start
 
 ## 🌱 Environment Variables Reference
 
-| Variable                           | Description                   |
-| ---------------------------------- | ----------------------------- |
-| `MONGODB_URI`                      | MongoDB connection string     |
-| `DB_NAME`                          | Database name                 |
-| `DB_TABLE_PROJECT_COLLECTION_NAME` | Projects collection           |
-| `DB_TABLE_PROFILE_COLLECTION_NAME` | Profile collection            |
-| `DB_TABLE_LUCIA_SESSIONS`          | Lucia sessions collection     |
-| `DB_TABLE_LUCIA_USERS`             | Lucia users collection        |
-| `INIT_USERNAME_ADMIN`              | Initial admin username        |
-| `INIT_PASSWORD_ADMIN`              | Initial admin password        |
-| `ADMIN_LOGIN_SLUG`                 | Custom admin route slug       |
-| `REVALIDATE_SECRET`                | Revalidation API secret       |
-| `REVALIDATE_ENABLE`                | Enable / disable revalidation |
-| `CLOUDINARY_CLOUD_NAME`            | Cloudinary cloud name         |
-| `CLOUDINARY_API_KEY`               | Cloudinary API key            |
-| `CLOUDINARY_API_SECRET`            | Cloudinary API secret         |
-| `CLOUDINARY_FOLDER`                | Default upload folder         |
-| `NEXT_AUTH_SECRET`                 | JWT Secret for Next-Auth      |
+| Variable                              | Description                        |
+| ------------------------------------- | ---------------------------------- |
+| `MONGODB_URI`                         | MongoDB connection string          |
+| `DB_NAME`                             | Database name                      |
+| `DB_TABLE_PROJECT_COLLECTION_NAME`    | Projects collection name           |
+| `DB_TABLE_PROFILE_COLLECTION_NAME`    | Profile collection name            |
+| `DB_TABLE_EXPERIENCE_COLLECTION_NAME` | Experience collection name         |
+| `INIT_USERNAME_ADMIN`                 | Initial admin username             |
+| `INIT_PASSWORD_ADMIN`                 | Initial admin password             |
+| `ADMIN_LOGIN_SLUG`                    | Custom admin route slug            |
+| `REVALIDATE_SECRET`                   | Revalidation API secret            |
+| `REVALIDATE_ENABLE`                   | Enable / disable revalidation      |
+| `CLOUDINARY_CLOUD_NAME`               | Cloudinary cloud name              |
+| `CLOUDINARY_API_KEY`                  | Cloudinary API key                 |
+| `CLOUDINARY_API_SECRET`               | Cloudinary API secret              |
+| `CLOUDINARY_FOLDER`                   | Default upload folder              |
+| `NEXT_AUTH_SECRET`                    | JWT secret for NextAuth            |
 
 ---
 

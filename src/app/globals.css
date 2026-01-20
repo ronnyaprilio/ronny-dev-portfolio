@@ -19,12 +19,49 @@ body {
   color: #f9fafb;
   font-family: 'Inter', sans-serif;
 }
+
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
 .fade-in {
   animation: fadeIn 0.8s ease-in-out;
 }
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-out-left {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}
+
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(50px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+.animate-slide-in > div {
+  animation: slide-in-right 0.35s ease-out;
+}
+
 .hero-text { animation-delay: 0.2s; }
 .hero-cta { animation-delay: 0.4s; }

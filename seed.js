@@ -8,6 +8,7 @@ const uri = process.env.MONGODB_URI;
 const collectionNameProjects = process.env.DB_TABLE_PROJECT_COLLECTION_NAME;
 const collectionNameProfile = process.env.DB_TABLE_PROFILE_COLLECTION_NAME;
 const collectionNameAdminUser = process.env.DB_TABLE_LUCIA_USERS;
+const collectionNameExperience = process.env.DB_TABLE_EXPERIENCE_COLLECTION_NAME;
 
 async function hashUserPassword(password) {
   const salt = crypto.randomBytes(16).toString('hex');
@@ -98,6 +99,67 @@ async function seed_projects() {
   }
 }
 
+async function seed_experience() {
+  const client = new MongoClient(uri);
+  try {
+    await client.connect();
+    const db = client.db();
+    const experienceCollection = db.collection(collectionNameExperience);
+
+    const count = await experienceCollection.countDocuments();
+    if (count === 0) {
+      await experienceCollection.insertMany([
+        {
+          period: "2023 — Present",
+          role: "Senior Software Engineer",
+          company: "Freelance / Remote",
+          highlights: [
+            "Designing and building modern web applications using Next.js and TypeScript",
+            "Focusing on performance, maintainability, and clean architecture",
+            "Working closely with clients to translate requirements into reliable solutions",
+          ],
+        },
+        {
+          period: "2021 — 2023",
+          role: "Senior Software Engineer",
+          company: "Enterprise Projects",
+          highlights: [
+            "Designing and building modern web applications using Java, AWS, Report Automation",
+            "Focusing on performance, maintainability, and clean architecture",
+            "Working closely with clients to translate requirements into reliable solutions",
+          ],
+        },
+        {
+          period: "2017 — 2020",
+          role: "Software Developer",
+          company: "Enterprise Projects",
+          highlights: [
+            "Maintained and improved large-scale Java-based systems",
+            "Handled production issues, bug fixes, and system optimizations",
+            "Collaborated with cross-functional teams in fast-paced environments",
+          ],
+        },
+        {
+          period: "2012 — 2015",
+          role: "Junior Software Engineer",
+          company: "Early Career",
+          highlights: [
+            "Built foundational programming skills across backend and frontend stacks",
+            "Learned to write maintainable, readable, and testable code",
+          ],
+        },
+      ]);
+      console.log('Experience Data seeded successfully!');
+    } else {
+      console.log('Experience Data already has data.');
+    }
+  } catch (err) {
+    console.error(err);
+  } finally {
+    await client.close();
+  }
+}
+
 async function seed_admin() {
   const client = new MongoClient(uri);
   try {
@@ -132,4 +194,5 @@ async function seed_admin() {
 
 seed_profile();
 seed_projects();
+seed_experience();
 seed_admin();

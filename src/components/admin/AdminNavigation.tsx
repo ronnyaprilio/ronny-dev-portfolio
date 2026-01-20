@@ -14,6 +14,11 @@ export default function AdminNavigation({slug} : {slug: string}) {
                 Edit Projects
               </Link>
             </li>
+            <li>
+              <Link href={`/admin/${slug}/edit-experiences`} className="block w-full text-left py-2 px-4 text-primary hover:bg-secondary rounded">
+                Edit Experiences
+              </Link>
+            </li>
           </ul>
         </nav>
     );

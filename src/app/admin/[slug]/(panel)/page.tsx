@@ -40,6 +40,22 @@ export default async function AdminDashboard({ params } : { params: Promise<{ sl
             Go to Projects →
           </a>
         </div>
+
+        <div className="rounded-xl border bg-white p-6 shadow-sm hover:shadow-md transition">
+          <h2 className="text-lg font-semibold mb-2">
+            Manage Experiences
+          </h2>
+          <p className="text-sm text-gray-500 mb-4">
+            Add, edit, or remove Experiences.
+          </p>
+
+          <a
+            href={`/admin/${slug}/edit-experience`}
+            className="inline-block text-sm font-medium text-blue-600 hover:underline"
+          >
+            Go to Experience →
+          </a>
+        </div>
       </div>
     </main>
     </>
