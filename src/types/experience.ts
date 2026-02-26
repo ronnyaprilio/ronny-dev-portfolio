@@ -1,5 +1,6 @@
 export interface Experience {
   _id: string;
+  displayOrder: number;
   period: string;
   role: string;
   company: string;

@@ -13,5 +13,8 @@ export async function getExperience(): Promise<Experience[]> {
   if (!experience) {
     throw new Error("Profile data not found");
   }
-  return experience;
+
+  return experience.sort(
+    (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)
+  );
 }

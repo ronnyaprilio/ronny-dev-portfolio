@@ -8,6 +8,7 @@ import EditExperienceDialog from "./EditExperienceDialog";
 const EMPTY_EXPERIENCE: Experience = {
   _id: "",
   period: "",
+  displayOrder: 0,
   role: "",
   company: "",
   highlights: [],
@@ -28,10 +29,12 @@ async function fetchExperiences(
     const data: Experience[] = await res.json();
 
     setExperiences(
-      data.map((e) => ({
-        ...e,
-        _id: e._id.toString(),
-      }))
+      data
+        .sort((a, b) => a.displayOrder - b.displayOrder)
+        .map((e) => ({
+          ...e,
+          _id: e._id.toString(),
+        }))
     );
   } catch (err) {
     console.error(err);
@@ -95,6 +98,7 @@ export default function ExperienceTable({
         <table className="w-full text-sm">
           <thead className="bg-gray-900 text-white">
             <tr>
+              <th className="px-6 py-3 text-left">Display Order</th>
               <th className="px-6 py-3 text-left">Period</th>
               <th className="px-6 py-3 text-left">Role</th>
               <th className="px-6 py-3 text-left">Company</th>
@@ -116,6 +120,7 @@ export default function ExperienceTable({
               !error &&
               experiences.map((exp) => (
                 <tr key={exp._id}>
+                  <td className="px-6 py-4">{exp.displayOrder}</td>
                   <td className="px-6 py-4">{exp.period}</td>
                   <td className="px-6 py-4 font-medium">{exp.role}</td>
                   <td className="px-6 py-4">{exp.company}</td>
