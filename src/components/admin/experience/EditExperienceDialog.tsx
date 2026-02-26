@@ -26,8 +26,15 @@ export default function EditExperienceDialog({
   const isEdit = Boolean(form?._id);
 
   useEffect(() => {
-    if (experience) {
-      setForm(experience);
+  if (experience) {
+      setForm({
+        _id: experience._id ?? "",
+        displayOrder: experience.displayOrder ?? 0,
+        period: experience.period ?? "",
+        role: experience.role ?? "",
+        company: experience.company ?? "",
+        highlights: experience.highlights ?? [],
+      });
     }
   }, [experience]);
 
@@ -79,6 +86,16 @@ export default function EditExperienceDialog({
         <h2 className="text-xl font-semibold text-gray-900">
           {isEdit ? "Edit Experience" : "Add Experience"}
         </h2>
+
+        <div>
+          <label className="text-sm text-gray-500">Display Order</label>
+          <input
+            className="w-full border rounded-lg px-3 py-2 text-primary"
+            value={form.displayOrder}
+            onChange={(e) => onChange("displayOrder", parseInt(e.target.value) || 0)}
+            placeholder="1"
+          />
+        </div>
 
         <div>
           <label className="text-sm text-gray-500">Period</label>
