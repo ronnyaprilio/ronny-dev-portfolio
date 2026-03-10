@@ -16,7 +16,7 @@ export default function AboutSection({profile} : {profile: ProfileData}) {
           </div>
 
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="relative order-2 md:order-1">
+            <div className="relative order-1 md:order-1">
               <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-8 border border-white/10">
                 <div className="text-center">
                   <div className="w-40 h-40 bg-linear-to-br from-emerald-400 to-cyan-400 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg">
@@ -32,7 +32,7 @@ export default function AboutSection({profile} : {profile: ProfileData}) {
               </div>
             </div>
 
-            <div className="space-y-6 order-1 md:order-2">
+            <div className="space-y-6 order-2 md:order-2">
               <div className="prose prose-lg prose-invert max-w-none">
                 {profile.about_me.split('\n').map((line, idx) => (
                   <p key={idx} className="text-gray-300 leading-relaxed">
