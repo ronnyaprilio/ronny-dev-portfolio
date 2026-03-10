@@ -6,7 +6,7 @@ export default function ProjectSectionCard( { project }
     return (
         <div
         key={project._id}
-        className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow fade-in relative flex flex-col"
+        className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow fade-in relative flex flex-col h-113"
         >
             <div
                 key={project._id}
@@ -24,12 +24,12 @@ export default function ProjectSectionCard( { project }
                     />
                 </div>
 
-                <div className="p-6 flex flex-col">
+                <div className="p-6 flex flex-col flex-1">
                     <h3 className="text-xl font-semibold mb-2 text-gray-900 wrap-break-word">
                     {project.title}
                     </h3>
 
-                    <p className="text-gray-600 mb-4">
+                    <p className="text-gray-600 mb-4 flex-1 line-clamp-3">
                     {project.description}
                     </p>
 
