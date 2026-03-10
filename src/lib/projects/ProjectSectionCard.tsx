@@ -1,8 +1,8 @@
 import GithubButton from "@/components/buttons/GithubButton";
 import LiveDemoButton from "@/components/buttons/LiveDemoButton";
 
-export default function ProjectSectionCard( { project }
-    : { project: { _id: string; title: string; description: string; image: string; github?: string; live_demo?: string } }) {
+export default function ProjectSectionCard( { project, onImageZoom }
+    : { project: { _id: string; title: string; description: string; image: string; github?: string; live_demo?: string }, onImageZoom: (imageSrc: string) => void }) {
     return (
         <div
         key={project._id}
@@ -20,7 +20,8 @@ export default function ProjectSectionCard( { project }
                         : "https://via.placeholder.com/400x250?text=Project"
                     }
                     alt={project.title}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-48 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+                    onClick={() => onImageZoom(project.image || "https://via.placeholder.com/400x250?text=Project")}
                     />
                 </div>
 

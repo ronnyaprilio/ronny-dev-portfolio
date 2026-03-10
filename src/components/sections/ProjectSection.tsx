@@ -10,6 +10,7 @@ interface ProjectSectionProps {
 
 const ProjectSection = ({ projects }: ProjectSectionProps) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [zoomedImage, setZoomedImage] = useState<string | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -32,6 +33,14 @@ const ProjectSection = ({ projects }: ProjectSectionProps) => {
       }
     };
   }, []);
+
+  const handleImageZoom = (imageSrc: string) => {
+    setZoomedImage(imageSrc);
+  };
+
+  const handleZoomClose = () => {
+    setZoomedImage(null);
+  };
 
   return (
     <section
@@ -57,7 +66,7 @@ const ProjectSection = ({ projects }: ProjectSectionProps) => {
                 className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 style={{ transitionDelay: `${300 + index * 100}ms` }}
               >
-                <ProjectSectionCard project={project} />
+                <ProjectSectionCard project={project} onImageZoom={handleImageZoom} />
               </div>
             ))}
           </div>
@@ -77,6 +86,26 @@ const ProjectSection = ({ projects }: ProjectSectionProps) => {
           </div>
         )}
       </div>
+
+      {/* Zoomed Image Overlay */}
+      {zoomedImage && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4 cursor-pointer"
+          onClick={handleZoomClose}
+        >
+          <img
+            src={zoomedImage}
+            alt="Zoomed project"
+            className="max-w-full max-h-full object-contain"
+          />
+          <button
+            className="absolute top-4 right-4 text-white text-2xl hover:text-gray-300 transition-colors"
+            onClick={handleZoomClose}
+          >
+            ×
+          </button>
+        </div>
+      )}
     </section>
   );
 };
