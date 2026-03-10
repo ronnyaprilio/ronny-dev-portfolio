@@ -1,19 +1,43 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
 import { ProfileData } from "@/types/profile";
 
 export default function Footer({profile} : {profile: ProfileData}) {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <footer id="contact" className="py-16 bg-gradient-to-b from-gray-900 to-black text-white">
+    <footer ref={sectionRef} id="contact" className="py-16 bg-linear-to-b from-gray-900 to-black text-white">
       <div className="container mx-auto px-6">
-        <div className="text-center">
-          <div className="inline-block mb-4 px-4 py-2 bg-emerald-500/20 text-emerald-300 rounded-full text-sm font-medium border border-emerald-500/30">
-            Let's Connect
-          </div>
+        <div className={`text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Get In Touch</h2>
           <p className="text-gray-400 mb-8 max-w-md mx-auto">
             I'm always open to discussing new opportunities and interesting projects.
           </p>
 
-          <div className="flex justify-center space-x-8 mb-8">
+          <div className={`flex justify-center space-x-8 mb-8 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <a
               href={profile.github}
               className="group p-3 bg-white/10 rounded-full hover:bg-emerald-600 transition-all duration-300 hover:scale-110"
@@ -67,7 +91,7 @@ export default function Footer({profile} : {profile: ProfileData}) {
             </a>
           </div>
 
-          <div className="border-t border-white/10 pt-8">
+          <div className={`border-t border-white/10 pt-8 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <p className="text-gray-400 text-sm">
               {profile.copyright}
             </p>

@@ -1,16 +1,41 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
 import { Experience, ExperienceSectionProps } from "@/types/experience";
 
 export default function ExperienceSection({experiences }: ExperienceSectionProps) {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="experiences"
-      className="py-24 bg-gradient-to-b from-slate-900 to-gray-900 text-white min-h-screen"
+      className="py-24 bg-linear-to-b from-slate-900 to-gray-900 text-white min-h-screen"
     >
       <div className="container mx-auto px-6">
-        <div className="text-center mb-20">
-          <div className="inline-block mb-4 px-4 py-2 bg-emerald-500/20 text-emerald-300 rounded-full text-sm font-medium border border-emerald-500/30">
-            💼 Experience
-          </div>
+        <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Professional Journey
           </h2>
@@ -21,12 +46,12 @@ export default function ExperienceSection({experiences }: ExperienceSectionProps
         </div>
 
         <div className="relative max-w-4xl mx-auto">
-          <div className="absolute left-8 top-0 h-full w-0.5 bg-gradient-to-b from-emerald-400 to-teal-400"></div>
+          <div className={`absolute left-8 top-0 h-full w-0.5 bg-linear-to-b from-emerald-400 to-teal-400 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}></div>
 
           <div className="space-y-12">
             {experiences.map((exp, index) => (
-              <div key={index} className="relative pl-20 animate-fade-in-up" style={{ animationDelay: `${index * 0.2}s` }}>
-                <div className="absolute left-4 top-6 w-8 h-8 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 flex items-center justify-center shadow-lg">
+              <div key={index} className={`relative pl-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${500 + index * 200}ms` }}>
+                <div className={`absolute left-4 top-6 w-8 h-8 rounded-full bg-linear-to-r from-emerald-400 to-teal-400 flex items-center justify-center shadow-lg transition-all duration-1000 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`} style={{ transitionDelay: `${600 + index * 200}ms` }}>
                   <div className="w-3 h-3 rounded-full bg-slate-900"></div>
                 </div>
 
@@ -48,7 +73,7 @@ export default function ExperienceSection({experiences }: ExperienceSectionProps
                   <ul className="space-y-3 text-gray-300">
                     {exp.highlights.map((item, i) => (
                       <li key={i} className="flex items-start">
-                        <svg className="w-5 h-5 text-emerald-400 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-5 h-5 text-emerald-400 mr-3 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                         <span className="leading-relaxed">{item}</span>

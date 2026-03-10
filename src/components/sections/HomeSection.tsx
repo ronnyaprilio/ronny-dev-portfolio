@@ -2,9 +2,9 @@ import { ProfileData } from "@/types/profile";
 
 export default function HomeSection({profile} : {profile: ProfileData}) {
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-emerald-900 to-slate-900 overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-emerald-900 to-slate-900 overflow-hidden">
       <div className="absolute inset-0 opacity-40">
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 via-transparent to-teal-900/20"></div>
+        <div className="absolute inset-0 bg-linear-to-br from-emerald-900/20 via-transparent to-teal-900/20"></div>
       </div>
 
       <div className="absolute top-20 left-10 w-20 h-20 bg-emerald-500/10 rounded-full blur-xl animate-pulse"></div>
@@ -12,7 +12,7 @@ export default function HomeSection({profile} : {profile: ProfileData}) {
       <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-green-500/10 rounded-full blur-xl animate-pulse delay-500"></div>
 
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 bg-gradient-to-r from-white via-emerald-100 to-teal-200 bg-clip-text text-transparent leading-tight">
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 bg-linear-to-r from-white via-emerald-100 to-teal-200 bg-clip-text text-transparent leading-tight">
           {profile.greetings}
         </h1>
 
@@ -23,7 +23,7 @@ export default function HomeSection({profile} : {profile: ProfileData}) {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <a
             href="#projects"
-            className="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold rounded-xl hover:from-emerald-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="group inline-flex items-center px-8 py-4 bg-linear-to-r from-emerald-600 to-teal-600 text-white font-semibold rounded-xl hover:from-emerald-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             View My Work
             <svg className="ml-2 w-5 h-5 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">

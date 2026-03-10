@@ -14,13 +14,13 @@ export default function PageHeader({profile} : { profile?: ProfileData }) {
   ];
 
   return (
-    <header className="fixed top-0 w-full bg-black/20 backdrop-blur-xl shadow-lg z-50 border-b border-white/10">
+    <header className="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm z-50">
       <nav className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
           {/* Logo/Name */}
           <a
             href="#home"
-            className="text-xl font-bold text-white hover:text-emerald-400 transition-colors"
+            className="text-xl font-bold text-gray-900 hover:text-emerald-600 transition-colors"
           >
             {profile?.name || "Portfolio"}
           </a>
@@ -31,10 +31,10 @@ export default function PageHeader({profile} : { profile?: ProfileData }) {
               <li key={item.href}>
                 <a
                   href={item.href}
-                  className="text-gray-300 hover:text-emerald-400 font-medium transition-colors duration-200 relative group"
+                  className="text-gray-700 hover:text-emerald-600 font-medium transition-colors duration-200 relative group"
                 >
                   {item.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-emerald-400 to-teal-400 group-hover:w-full transition-all duration-200"></span>
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-600 group-hover:w-full transition-all duration-200"></span>
                 </a>
               </li>
             ))}
@@ -43,11 +43,11 @@ export default function PageHeader({profile} : { profile?: ProfileData }) {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
             aria-label="Toggle menu"
           >
             <svg
-              className="w-6 h-6 text-white"
+              className="w-6 h-6 text-gray-700"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -63,13 +63,13 @@ export default function PageHeader({profile} : { profile?: ProfileData }) {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-white/10">
+          <div className="md:hidden mt-4 pb-4 border-t border-gray-200">
             <ul className="space-y-4">
               {navItems.map((item) => (
                 <li key={item.href}>
                   <a
                     href={item.href}
-                    className="block text-gray-300 hover:text-emerald-400 font-medium py-2 transition-colors"
+                    className="block text-gray-700 hover:text-emerald-600 font-medium py-2 transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
