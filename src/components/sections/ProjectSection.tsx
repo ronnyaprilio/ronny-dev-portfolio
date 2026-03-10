@@ -6,30 +6,52 @@ const ProjectSection = async () => {
   const projectsFromDb = await getProjects();
 
   const projects: Project[] = projectsFromDb.map(p => ({
-    ...p, 
+    ...p,
     _id: p._id.toString(),
   }));
 
   return (
     <section
       id="projects"
-      className="py-20 bg-secondary min-h-screen flex items-center"
+      className="py-24 bg-gradient-to-b from-gray-50 to-white min-h-screen"
     >
       <div className="container mx-auto px-6">
-        <h2 className="text-4xl font-bold text-center mb-12 text-gray-900">
-          My Projects
-        </h2>
+        <div className="text-center mb-16">
+          <div className="inline-block mb-4 px-4 py-2 bg-emerald-100 text-emerald-800 rounded-full text-sm font-medium">
+            Featured Work
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            My Projects
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            A showcase of my recent work and creative solutions
+          </p>
+        </div>
 
         {projects.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project) => (
-              <ProjectSectionCard key={project._id} project={project} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {projects.map((project, index) => (
+              <div
+                key={project._id}
+                className="animate-fade-in-up"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <ProjectSectionCard project={project} />
+              </div>
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center h-56">
-            <p className="text-primary/80 text-lg italic text-center">
+          <div className="flex flex-col items-center justify-center h-64 bg-white rounded-2xl shadow-sm border border-gray-100">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+            </div>
+            <p className="text-gray-500 text-lg font-medium text-center">
               No projects available at the moment.
+            </p>
+            <p className="text-gray-400 text-sm text-center mt-1">
+              Check back soon for exciting new work!
             </p>
           </div>
         )}
