@@ -34,6 +34,7 @@ const PROFILE_FIELDS = [
   "github",
   "linkedin",
   "email",
+  "upwork",
 ] as const;
 
 export async function saveProfile(formData: FormData) {
