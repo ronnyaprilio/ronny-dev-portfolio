@@ -93,7 +93,7 @@ export default function Footer({profile} : {profile: ProfileData}) {
             {profile.upwork?.trim() && (
               <a
                 href={profile.upwork}
-                className="group p-3 bg-white/10 rounded-full hover:bg-[#14A800] transition-all duration-300 hover:scale-110"
+                className="group p-3 bg-white/10 rounded-full hover:bg-emerald-600 transition-all duration-300 hover:scale-110"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Upwork"
