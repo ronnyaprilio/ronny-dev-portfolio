@@ -44,6 +44,7 @@ export default function EditProfileClient({ profile }: {profile: ProfileData}) {
           <InputText label="GitHub" name="github"  defaultValue={form.github}/>
           <InputText label="LinkedIn" name="linkedin"  defaultValue={form.linkedin}/>
           <InputText label="Email" name="email" defaultValue={form.email} />
+          <InputText label="Upwork" name="upwork" defaultValue={form.upwork} />
 
         </div>
 
