@@ -11,4 +11,5 @@ export interface ProfileData {
   linkedin: string;
   email: string;
   upwork: string;
+  keywords: string;
 }
