@@ -14,13 +14,20 @@ export async function getProfile(): Promise<ProfileData> {
   }
 
   const profile = await findById<ProfileData>(
-    PROFILE_COLLECTION_NAME, "main-profile"
+    PROFILE_COLLECTION_NAME,
+    "main-profile"
   );
 
   if (!profile) {
     throw new Error("Profile data not found");
   }
-  return profile;
+
+  const normalized: ProfileData = {
+    ...profile,
+  };
+
+  cachedProfile = normalized;
+  return normalized;
 }
 
 const PROFILE_FIELDS = [
@@ -35,18 +42,22 @@ const PROFILE_FIELDS = [
   "linkedin",
   "email",
   "upwork",
+  "keywords",
 ] as const;
 
 export async function saveProfile(formData: FormData) {
-  const data = Object.fromEntries(
-    PROFILE_FIELDS.map((field) => [
-      field,
-      formData.get(field)?.toString() ?? "",
-    ])
-  ) as Partial<ProfileData>;
+  const data: Partial<ProfileData> = {};
+
+  for (const field of PROFILE_FIELDS) {
+    const raw = formData.get(field);
+    const value = typeof raw === "string" ? raw : "";
+    data[field] = value;
+  }
 
   await updateById<ProfileData>(
-    PROFILE_COLLECTION_NAME, "main-profile", data
+    PROFILE_COLLECTION_NAME,
+    "main-profile",
+    data
   );
 
   clearProfileCache();

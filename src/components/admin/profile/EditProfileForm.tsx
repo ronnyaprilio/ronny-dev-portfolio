@@ -13,6 +13,15 @@ export default function EditProfileClient({ profile }: {profile: ProfileData}) {
   ) {
     const target = e.target as HTMLInputElement | HTMLTextAreaElement;
     if (!target.name) return;
+
+    if (target.name === "keywords") {
+      setForm((prev) => ({
+        ...prev,
+        keywords: target.value,
+      }));
+      return;
+    }
+
     setForm((prev) => ({
       ...prev,
       [target.name]: target.value,
@@ -45,6 +54,14 @@ export default function EditProfileClient({ profile }: {profile: ProfileData}) {
           <InputText label="LinkedIn" name="linkedin"  defaultValue={form.linkedin}/>
           <InputText label="Email" name="email" defaultValue={form.email} />
           <InputText label="Upwork" name="upwork" defaultValue={form.upwork} />
+          <div className="md:col-span-2">
+          <InputText
+            label="Keywords (separate with new lines)"
+            name="keywords"
+            rows={3}
+            defaultValue={form.keywords}
+          />
+        </div>
 
         </div>
 

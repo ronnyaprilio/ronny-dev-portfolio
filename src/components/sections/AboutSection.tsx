@@ -41,18 +41,17 @@ export default function AboutSection({profile} : {profile: ProfileData}) {
                 ))}
               </div>
               <div className="flex justify-center mt-12 gap-8 flex-wrap">
-                <div className="w-32 h-32 flex items-center justify-center text-center bg-emerald-500/20 text-emerald-300 text-lg font-medium rounded-full border border-emerald-500/30">
-                  Innovative
-                </div>
-
-                <div className="w-32 h-32 flex items-center justify-center text-center bg-emerald-500/20 text-emerald-300 text-lg font-medium rounded-full border border-emerald-500/30">
-                  Builder
-                </div>
-
-                <div className="w-32 h-32 flex items-center justify-center text-center bg-emerald-500/20 text-emerald-300 text-base font-medium rounded-full border border-emerald-500/30 px-3">
-                  Problem Solver
-                </div>
-
+                {(profile.keywords ?? "")
+                  .split("\n")
+                  .filter(Boolean)
+                  .map((keyword, idx) => (
+                    <div
+                      key={idx}
+                      className="w-32 h-32 flex items-center justify-center text-center bg-emerald-500/20 text-emerald-300 text-base font-medium rounded-full border border-emerald-500/30 px-3"
+                    >
+                      {keyword}
+                    </div>
+                ))}
               </div>
             </div>
           </div>
